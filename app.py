@@ -11,30 +11,35 @@ from Helpers.classify_and_rewrite import classify_and_rewrite_clauses
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 
+# Embedding compartilhado
 embeddings = OpenAIEmbeddings(
     model="text-embedding-3-large",
     openai_api_key=os.getenv("OPENAI_API_KEY")
 )
 
-# Carregar vetores e DataFrame histórico uma única vez
-@st.cache_resource
-def load_resources():
-    vectordb = Chroma(persist_directory="Data/chroma_db_ing", embedding_function=embeddings)
-    df_historical = pd.read_excel("Data/Clausulas_Historicas_Ing_Paragrafos_Revisadas_vf.xlsx")  # ou .xlsx
-    return vectordb, df_historical
-
-vectordb, df_historical = load_resources()
-
-# Interface do usuário
+# Menu para escolher idioma
 st.title("📄 NDA Clause Rewriter")
+idioma = st.selectbox("Selecione o idioma do NDA:", ["Inglês", "Português"])
+
+# Carregar o banco vetorial e dataset correto com base no idioma
+@st.cache_resource
+def load_resources(idioma):
+    if idioma == "Inglês":
+        vectordb = Chroma(persist_directory="Data/chroma_db_ing", embedding_function=embeddings)
+        df = pd.read_excel("Data/Clausulas_Historicas_Ing_Paragrafos_Revisadas_vf.xlsx")
+    else:
+        vectordb = Chroma(persist_directory="Data/chroma_db_pt", embedding_function=embeddings)
+        df = pd.read_excel("Data/Clausulas_Historicas_Pt_Paragrafos_Revisadas_vf.xlsx")
+    return vectordb, df
+
+vectordb, df_historical = load_resources(idioma)
 
 uploaded_file = st.file_uploader("📤 Faça o upload de um arquivo NDA (.docx)", type=["docx"])
-
 
 if uploaded_file:
     paragraphs = extract_paragraphs(uploaded_file)
 
-    if st.button("Classificar e Reescrever Cláusulas"):
+    if st.button("Classificar e Reescrever Cláusulas") and idioma == "Inglês":
         with st.spinner("🔍 Processando..."):
             df_resultado = classify_and_rewrite_clauses(
                 new_paragraphs=paragraphs,
@@ -53,13 +58,11 @@ if uploaded_file:
 
             st.dataframe(df_resultado)
 
-            # ✅ Criar arquivo Excel em memória usando BytesIO
             output = io.BytesIO()
             with pd.ExcelWriter(output, engine='openpyxl') as writer:
                 df_resultado.to_excel(writer, index=False)
-            output.seek(0)  # volta o ponteiro para o início
+            output.seek(0)
 
-            # ✅ Botão para baixar
             st.download_button(
                 label="📥 Baixar resultado",
                 data=output,
