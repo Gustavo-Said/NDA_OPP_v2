@@ -9,3 +9,4 @@ langchain-chroma
 chromadb
 langchain-community
 tqdm
+openpyxl
