@@ -7,16 +7,16 @@
 import streamlit as st
 import pandas as pd
 import os
-from helpers.extract_paragraphs import extract_paragraphs
-from helpers.classify_and_rewrite import classify_and_rewrite_clauses
+from Helpers.extract_paragraphs import extract_paragraphs
+from Helpers.classify_and_rewrite import classify_and_rewrite_clauses
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 
 # Carregar vetores e DataFrame histórico uma única vez
 @st.cache_resource
 def load_resources():
-    vectordb = Chroma(persist_directory="data/combined_chroma_dir_ing_v4", embedding_function=OpenAIEmbeddings())
-    df_historical = pd.read_csv("data/Clausulas_Historicas_Ing_Paragrafos_Revisadas_vf.xlsx")  # ou .xlsx
+    vectordb = Chroma(persist_directory="Data/combined_chroma_dir_ing_v4", embedding_function=OpenAIEmbeddings())
+    df_historical = pd.read_csv("Data/Clausulas_Historicas_Ing_Paragrafos_Revisadas_vf.xlsx")  # ou .xlsx
     return vectordb, df_historical
 
 vectordb, df_historical = load_resources()
