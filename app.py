@@ -27,7 +27,7 @@ uploaded_file = st.file_uploader("📤 Faça o upload de um arquivo NDA (.docx)"
 if uploaded_file:
     paragraphs = extract_paragraphs(uploaded_file)
 
-    print(paragraphs)
+    st.write("Parágrafos extraídos:", paragraphs)
     if st.button("Classificar e Reescrever Cláusulas"):
         with st.spinner("🔍 Processando..."):
             df_resultado = classify_and_rewrite_clauses(
@@ -42,6 +42,7 @@ if uploaded_file:
                 fuzzy_cutoff=0.75,
                 similarity_cutoff = 0.3
             )
+            st.write(f"🔎 {len(df_resultado)} cláusulas processadas.")
             st.success("✅ Concluído!")
 
             st.dataframe(df_resultado)
