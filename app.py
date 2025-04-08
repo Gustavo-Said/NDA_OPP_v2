@@ -11,6 +11,11 @@ from Helpers.classify_and_rewrite import classify_and_rewrite_clauses
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 
+embeddings = OpenAIEmbeddings(
+    model="text-embedding-3-large",
+    openai_api_key=os.getenv("OPENAI_API_KEY")
+)
+
 # Carregar vetores e DataFrame histórico uma única vez
 @st.cache_resource
 def load_resources():
@@ -28,7 +33,6 @@ uploaded_file = st.file_uploader("📤 Faça o upload de um arquivo NDA (.docx)"
 
 if uploaded_file:
     paragraphs = extract_paragraphs(uploaded_file)
-    st.write("Parágrafos extraídos:", paragraphs)
 
     if st.button("Classificar e Reescrever Cláusulas"):
         with st.spinner("🔍 Processando..."):
