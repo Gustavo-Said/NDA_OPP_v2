@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
-
 import streamlit as st
 import pandas as pd
 import os
+import io
 from Helpers.extract_paragraphs import extract_paragraphs
 from Helpers.classify_and_rewrite import classify_and_rewrite_clauses
 from langchain_chroma import Chroma
@@ -47,5 +45,16 @@ if uploaded_file:
 
             st.dataframe(df_resultado)
 
-            st.download_button("📥 Baixar resultado", df_resultado.to_excel(index=False).encode('utf-8'), file_name="output.xlsx")
+            # ✅ Criar arquivo Excel em memória usando BytesIO
+            output = io.BytesIO()
+            with pd.ExcelWriter(output, engine='openpyxl') as writer:
+                df_resultado.to_excel(writer, index=False)
+            output.seek(0)  # volta o ponteiro para o início
 
+            # ✅ Botão para baixar
+            st.download_button(
+                label="📥 Baixar resultado",
+                data=output,
+                file_name="output.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
