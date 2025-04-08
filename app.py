@@ -27,15 +27,9 @@ uploaded_file = st.file_uploader("📤 Faça o upload de um arquivo NDA (.docx)"
 
 
 if uploaded_file:
-    # ✅ Salva o arquivo enviado pelo usuário como arquivo temporário
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
-        tmp.write(uploaded_file.read())
-        tmp_path = tmp.name  # <-- Caminho do arquivo para passar à função
-
-    # ✅ Agora sim: extrai os parágrafos do .docx salvo
-    paragraphs = extract_paragraphs(tmp_path)
-
+    paragraphs = extract_paragraphs(uploaded_file)
     st.write("Parágrafos extraídos:", paragraphs)
+
     if st.button("Classificar e Reescrever Cláusulas"):
         with st.spinner("🔍 Processando..."):
             df_resultado = classify_and_rewrite_clauses(
