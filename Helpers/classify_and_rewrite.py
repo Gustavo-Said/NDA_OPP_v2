@@ -4,22 +4,20 @@
 # In[ ]:
 
 
-import openai
 import os
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain.vectorstores import Chroma
+import openai
 import csv
-from docx import Document
-from langchain_chroma import Chroma  # or FAISS, Pinecone, etc.
-import pandas as pd
-import logging
-from dotenv import load_dotenv
-from langchain import PromptTemplate, LLMChain
-from openai import OpenAI
 import json
-from collections import defaultdict
 import re
 import difflib
+import logging
+import pandas as pd
+from docx import Document
+from dotenv import load_dotenv
+from collections import defaultdict
+from langchain import PromptTemplate, LLMChain
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_community.vectorstores import Chroma
 
 def classify_and_rewrite_clauses(
     new_paragraphs,
