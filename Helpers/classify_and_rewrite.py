@@ -7,7 +7,7 @@
 import openai
 import os
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain.vectorstores import FAISS  # or Chroma/Pinecone
+from langchain.vectorstores import Chroma
 import csv
 from docx import Document
 from langchain_chroma import Chroma  # or FAISS, Pinecone, etc.
