@@ -5,6 +5,7 @@ import streamlit as st
 import pandas as pd
 import os
 import io
+import tempfile
 from Helpers.extract_paragraphs import extract_paragraphs
 from Helpers.classify_and_rewrite import classify_and_rewrite_clauses
 from langchain_chroma import Chroma
@@ -24,8 +25,15 @@ st.title("📄 NDA Clause Rewriter")
 
 uploaded_file = st.file_uploader("📤 Faça o upload de um arquivo NDA (.docx)", type=["docx"])
 
+
 if uploaded_file:
-    paragraphs = extract_paragraphs(uploaded_file)
+    # ✅ Salva o arquivo enviado pelo usuário como arquivo temporário
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
+        tmp.write(uploaded_file.read())
+        tmp_path = tmp.name  # <-- Caminho do arquivo para passar à função
+
+    # ✅ Agora sim: extrai os parágrafos do .docx salvo
+    paragraphs = extract_paragraphs(tmp_path)
 
     st.write("Parágrafos extraídos:", paragraphs)
     if st.button("Classificar e Reescrever Cláusulas"):
