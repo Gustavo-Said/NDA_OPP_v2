@@ -1,0 +1,19 @@
+streamlit
+pandas
+os
+openai
+os
+langchain_openai
+langchain.vectorstores
+csv
+docx
+langchain_chroma
+logging
+faiss
+dotenv
+langchain
+openai OpenAI
+json
+collections
+re
+difflib
