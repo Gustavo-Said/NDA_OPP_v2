@@ -16,7 +16,7 @@ from langchain_openai import OpenAIEmbeddings
 @st.cache_resource
 def load_resources():
     vectordb = Chroma(persist_directory="Data/chroma_db_ing", embedding_function=OpenAIEmbeddings())
-    df_historical = pd.read_csv("Data/Clausulas_Historicas_Ing_Paragrafos_Revisadas_vf.xlsx")  # ou .xlsx
+    df_historical = pd.read_excel("Data/Clausulas_Historicas_Ing_Paragrafos_Revisadas_vf.xlsx")  # ou .xlsx
     return vectordb, df_historical
 
 vectordb, df_historical = load_resources()
