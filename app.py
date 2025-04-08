@@ -19,7 +19,7 @@ embeddings = OpenAIEmbeddings(
 # Carregar vetores e DataFrame histórico uma única vez
 @st.cache_resource
 def load_resources():
-    vectordb = Chroma(persist_directory="Data/chroma_db_ing", embedding_function=OpenAIEmbeddings())
+    vectordb = Chroma(persist_directory="Data/chroma_db_ing", embedding_function=embeddings)
     df_historical = pd.read_excel("Data/Clausulas_Historicas_Ing_Paragrafos_Revisadas_vf.xlsx")  # ou .xlsx
     return vectordb, df_historical
 
