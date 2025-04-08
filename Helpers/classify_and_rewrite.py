@@ -13,7 +13,6 @@ from docx import Document
 from langchain_chroma import Chroma  # or FAISS, Pinecone, etc.
 import pandas as pd
 import logging
-import faiss
 from dotenv import load_dotenv
 from langchain import PromptTemplate, LLMChain
 from openai import OpenAI
