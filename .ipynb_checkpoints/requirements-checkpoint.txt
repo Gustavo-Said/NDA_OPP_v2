@@ -1,0 +1,12 @@
+streamlit
+pandas
+openai
+python-dotenv
+python-docx
+langchain
+langchain-openai
+langchain-chroma
+chromadb
+langchain-community
+tqdm
+openpyxl
