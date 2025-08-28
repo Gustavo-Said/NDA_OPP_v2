@@ -35,7 +35,7 @@ def load_resources(idioma):
         vectordb_standard = Chroma(persist_directory="Data/standard_chroma_pt", embedding_function=embeddings)
     return vectordb, df, vectordb_standard
 
-vectordb, df_historical = load_resources(idioma)
+vectordb, df_historical, vectordb_standard = load_resources(idioma)
 
 uploaded_file = st.file_uploader("📤 Faça o upload de um arquivo NDA (.docx)", type=["docx"])
 
